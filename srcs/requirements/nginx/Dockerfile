@@ -1,8 +1,6 @@
-FROM alpine
+FROM debian
 
-RUN apk update && apk upgrade
-
-RUN apk --no-cache add nginx openssl
+RUN apt-get -y update && apt-get install -y nginx && apt-get install openssl -y
 
 RUN mkdir -p /run/nginx
 
@@ -13,19 +11,13 @@ RUN openssl req -newkey rsa:2048 \
 	-sha256 \
 	-days 365 \
 	-nodes \
-	-keyout /etc/nginx/ssl/inception.key \
-	-out /etc/nginx/ssl/inception.pem \
+	-keyout /etc/nginx/ssl/amargiac.42.fr.key \
+	-out /etc/nginx/ssl/amargiac.42.fr.crt \
 	-subj "/C=IT/ST=Italy/L=Roma/O=42Roma/OU=$USER/CN=$USER"
-#genera una nuova chiave privata e la salva nel file specificato
-#certificato autofirmato
-#algoritmo per la firma
-#validità del certificato
-#non cripta la chiave privata
-#percorso e nome del file della chiave privata
-#specifica i dettagli del certificato
 
-COPY nginx.conf /etc/nginx/http.d/nginx.conf
+COPY html/index.html /html/index.html
 
+COPY nginx.conf /etc/nginx/conf.d
 
 EXPOSE 443
 
