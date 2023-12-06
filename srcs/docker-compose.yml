@@ -13,3 +13,51 @@ services:
       - "443:443"
     networks:
       - mynetwork
+    depends_on:
+      - wordpress
+    volumes:
+      - wp:/var/www/html/wordpress
+
+  wordpress:
+    image: "i-wordpress:1.0.0"
+    build: ./requirements/wordpress
+    restart: always
+    ports:
+      - "9000:9000"
+    networks:
+      - mynetwork
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    volumes:
+      - wp:/var/www/html/wordpress
+
+  mariadb:
+    image: "i-mariadb:1.0.0"
+    build: ./requirements/mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    env_file:
+      - .env
+
+
+volumes:
+
+  db:
+    name: db
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/$USER/data/mariadb
+  wp:
+    name: wp
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/$USER/data/wordpress
