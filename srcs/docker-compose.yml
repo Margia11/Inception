@@ -16,14 +16,14 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wp:/var/www/html/wordpress
+      - wordpress_data:/var/www/html
 
   wordpress:
     image: "i-wordpress:1.0.0"
     build: ./requirements/wordpress
     restart: always
-    ports:
-      - "9000:9000"
+    expose:
+      - "9000"
     networks:
       - mynetwork
     env_file:
@@ -31,33 +31,28 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wp:/var/www/html/wordpress
+      - wordpress_data:/var/www/html
 
   mariadb:
     image: "i-mariadb:1.0.0"
     build: ./requirements/mariadb
     restart: always
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     networks:
       - mynetwork
     env_file:
       - .env
+    volumes:
+      - mariadb_data:/data
 
 
 volumes:
+  mariadb_data:
 
-  db:
-    name: db
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/$USER/data/mariadb
-  wp:
-    name: wp
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/$USER/data/wordpress
+  wordpress_data:
+
+
+
+
+

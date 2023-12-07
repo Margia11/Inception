@@ -19,8 +19,6 @@ RUN openssl req -newkey rsa:2048 \
 	-out /etc/nginx/ssl/amargiac.42.fr.crt \
 	-subj "/C=IT/ST=Italy/L=Roma/O=42Roma/OU=$USER/CN=$USER"
 
-COPY html/index.html /html/index.html
-
 #copio il file di configurazione di nginx nella cartella di configurazione
 COPY nginx.conf /etc/nginx/conf.d
 
