@@ -49,10 +49,17 @@ services:
 
 volumes:
   mariadb_data:
+    driver: local
+    name: wp_db
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/Desktop/aaa
 
   wordpress_data:
-
-
-
-
-
+    driver: local
+    name: wp_files
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/Desktop/aaa
